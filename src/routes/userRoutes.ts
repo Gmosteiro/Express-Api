@@ -1,14 +1,12 @@
-// src/routes/userRoutes.ts
-
 import express from 'express';
-import { handleCreateUser, handleGetUser } from '../controllers/userController';
+import { createUser } from '../controllers/userController';
+import { validateUser } from '../middleware/validation';
 
 const router = express.Router();
 
-// POST /user
-router.post('/', handleCreateUser);
+// Routes
+router.post('/users', validateUser, createUser);
 
-// Get user by ID
-router.get('/:id', handleGetUser);
+// Other user routes
 
 export default router;

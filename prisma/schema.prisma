@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  nickname   String
+  name       String
+  lastName   String
+  email      String
+  birthDate  DateTime
+  professor  Professor?
+  associated Associated?
+  //Other Fields
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model Associated {
+  userId    Int        @id @unique
+  user      User       @relation(fields: [userId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Register  Register[]
+}
+
+model Professor {
+  userId        Int          @id @unique
+  user          User         @relation(fields: [userId], references: [id])
+  description   String
+  biography     String
+  website       String
+  classes       Class[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  Institution   Institution? @relation(fields: [institutionId], references: [id])
+  institutionId Int?
+}
+
+model Institution {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  description String
+  url         String      @unique
+  professors  Professor[]
+  activities  Activity[]
+  //Other Fields
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Activity {
+  id            Int          @id @default(autoincrement())
+  name          String
+  description   String
+  duration      Decimal
+  cost          Decimal
+  registerDate  DateTime
+  Institution   Institution? @relation(fields: [institutionId], references: [id])
+  institutionId Int?
+  classes       Class[]
+  //Other Fields
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Class {
+  id              Int        @id @default(autoincrement())
+  name            String
+  date            DateTime
+  time            Decimal
+  website         String
+  registerDate    DateTime
+  Activity        Activity?  @relation(fields: [activityId], references: [id])
+  activityId      Int?
+  Register        Register[]
+  //Other Fields
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  Professor       Professor? @relation(fields: [professorUserId], references: [userId])
+  professorUserId Int?
+}
+
+model Register {
+  id               Int        @id @default(autoincrement())
+  registerDate     DateTime   @default(now())
+  associated       Associated @relation(fields: [associatedUserId], references: [userId])
+  class            Class      @relation(fields: [classId], references: [id])
+  associatedUserId Int
+  classId          Int
+  //Other Fields
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
