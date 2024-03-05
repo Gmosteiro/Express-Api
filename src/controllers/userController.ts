@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import prisma from '../config/db';
 import { validationResult } from 'express-validator';
-import { User } from '../types/user';
+import { User, Professor, Associated } from '../types/user';
 
 export const createUser = async (req: Request, res: Response): Promise<void> => {
 	const errors = validationResult(req);
@@ -19,9 +19,6 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 				lastName,
 				email,
 				birthDate,
-				institution,
-				bio,
-				website
 			}
 		});
 		res.status(201).json(user);
