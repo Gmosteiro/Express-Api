@@ -1,11 +1,12 @@
 import express from 'express';
-import { createUser } from '../controllers/userController';
+import { postUser } from '../controllers/userController';
 import { validateUser } from '../middleware/validation';
 
 const router = express.Router();
 
 // Routes
-router.post('/users', validateUser, createUser);
+router.post('/users', validateUser, postUser);
+//router.post('/users', postUser);
 
 // Other user routes
 

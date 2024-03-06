@@ -1,9 +1,6 @@
 // types/user.d.ts
 
-enum UserType {
-	Associated = 'associated',
-	Professor = 'professor'
-}
+export interface beforeUser extends Omit<User, 'id'> { }
 export interface User {
 	id: number;
 	nickname: string;
@@ -11,11 +8,6 @@ export interface User {
 	lastName: string;
 	email: string;
 	birthDate: Date;
-	description?: string;
-	userType?: UserType;
-	institution?: number;
-	bio?: string;
-	website?: string;
 }
 export interface Professor {
 	userId: number;
