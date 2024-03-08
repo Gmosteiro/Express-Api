@@ -2,7 +2,6 @@ import prisma from '../config/db';
 import { User, Professor, Associated, beforeUser } from '../types/user';
 
 export const createUser = async (bUser: beforeUser): Promise<User | null> => {
-
 	try {
 		const newUser = await prisma.user.create({
 			data: {
@@ -10,7 +9,7 @@ export const createUser = async (bUser: beforeUser): Promise<User | null> => {
 				name: bUser.name,
 				lastName: bUser.lastName,
 				email: bUser.email,
-				birthDate: bUser.birthDate
+				birthDate: `${bUser.birthDate}T00:00:00.000Z`,
 			}
 		});
 
@@ -69,4 +68,15 @@ export const getUserById = async (id: number): Promise<User | null> => {
 	}
 }
 
-// Other controller methods for user management (updateUser, deleteUser, etc.)
+export const getAllUsers = async (): Promise<User[]> => {
+	try {
+		const users = await prisma.user.findMany();
+		return users.map(user => ({
+			...user,
+			birthDate: new Date(user.birthDate).toLocaleDateString()
+		}));
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}

@@ -7,7 +7,7 @@ export interface User {
 	name: string;
 	lastName: string;
 	email: string;
-	birthDate: Date;
+	birthDate: Date | string;
 }
 export interface Professor {
 	userId: number;
