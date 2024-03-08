@@ -80,3 +80,8 @@ export const getAllUsers = async (): Promise<User[]> => {
 		return [];
 	}
 }
+
+export const updateUser = async (id: number, bUser: beforeUser): Promise<User | null> => {
+
+}
+
