@@ -81,7 +81,24 @@ export const getAllUsers = async (): Promise<User[]> => {
 	}
 }
 
+
 export const updateUser = async (id: number, bUser: beforeUser): Promise<User | null> => {
-
+    try {
+        const updatedUser = await prisma.user.update({
+            where: {
+                id: id
+            },
+            data: {
+                nickname: bUser.nickname,
+                name: bUser.name,
+                lastName: bUser.lastName,
+                email: bUser.email,
+                birthDate: `${bUser.birthDate}T00:00:00.000Z`,
+            }
+        });
+        return updatedUser;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 }
-
