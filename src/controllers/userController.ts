@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import { createUser, getUserById, getAllUsers, deleteUser } from './../services/userService';
+import { createUser, getUserById, getAllUsers, deleteUser, updateUser } from './../services/userService';
 import { User } from '../types/user.d';
 
 export const postUser = async (req: Request, res: Response): Promise<void> => {
@@ -47,7 +47,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-export const removeUser = async (req: Request, res: Response): Promise<void> => {
+export const remove = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
 
@@ -63,3 +63,19 @@ export const removeUser = async (req: Request, res: Response): Promise<void> => 
 		res.status(500).json({ error: 'Something went wrong' });
 	}
 }
+
+export const update = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const id = parseInt(req.params.id);
+		const userData = req.body;
+		const updatedUser = await updateUser(id, userData);
+		if (updatedUser) {
+			res.status(200).json(updatedUser);
+		} else {
+			res.status(404).json({ error: 'User not found' });
+		}
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Something went wrong' });
+	}
+};
