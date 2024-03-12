@@ -81,7 +81,23 @@ export const getAllUsers = async (): Promise<User[]> => {
 	}
 }
 
-export const updateUser = async (id: number, bUser: beforeUser): Promise<User | null> => {
+export const deleteUser = async (id: number): Promise<User | null> => {
+	try {
+		const user = await prisma.user.delete({
+			where: {
+				id
+			}
+		});
+
+		return user;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
 
 }
+
+// export const updateUser = async (id: number, bUser: beforeUser): Promise<User | null> => {
+
+// }
 

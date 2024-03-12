@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import { createUser, getUserById, getAllUsers } from './../services/userService';
+import { createUser, getUserById, getAllUsers, deleteUser } from './../services/userService';
 import { User } from '../types/user.d';
 
 export const postUser = async (req: Request, res: Response): Promise<void> => {
@@ -46,3 +46,20 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 		res.status(500).json({ error: 'Something went wrong' });
 	}
 };
+
+export const removeUser = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const { id } = req.params;
+
+		const user = await deleteUser(parseInt(id));
+
+		if (user) {
+			res.status(200).json(user);
+		} else {
+			res.status(404).json({ error: 'User not found' });
+		}
+	} catch (error) {
+		console.log(error)
+		res.status(500).json({ error: 'Something went wrong' });
+	}
+}
